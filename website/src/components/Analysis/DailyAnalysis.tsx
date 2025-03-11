@@ -25,6 +25,7 @@ export const DailyAnalysis = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const MAX_ANALYSES = 30; // Maximum number of analyses to display
 
   useEffect(() => {
     const fetchDailyAnalysis = async () => {
@@ -37,7 +38,8 @@ export const DailyAnalysis = () => {
         }
 
         const data: ApiResponse = await response.json();
-        setAnalyses(data.data);
+        // Limit to the most recent MAX_ANALYSES items
+        setAnalyses(data.data.slice(0, MAX_ANALYSES));
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -75,7 +77,10 @@ export const DailyAnalysis = () => {
   };
   return (
     <div className="bg-white rounded-lg shadow-md p-6 h-full">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Daily Market Analysis</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6">
+        Daily Market Analysis
+        <span className="text-sm font-normal text-gray-500 ml-2">(Showing max {MAX_ANALYSES})</span>
+      </h2>
 
       {loading ? (
         <div className="flex justify-center items-center py-10">
