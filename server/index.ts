@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Allow your frontend origins
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173','https://prismalytica.pages.dev/'], // Allow your frontend origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
