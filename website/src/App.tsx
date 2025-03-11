@@ -6,6 +6,7 @@ import { useUserExists } from './hooks/useUserExists'
 import ActiveAccount from './components/ActiveAccount/ActiveAccount'
 import { useState, useEffect } from 'react'
 import { AnalysisDashboard } from './components/Analysis/AnalysisDashboard'
+import UserCount from './components/UserCount/UserCount'
 
 function App() {
   const account = useAccount()
@@ -24,9 +25,10 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <UserCount />
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Technical Analyst</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Prismalytica Technical Analyst</h1>
             <p className="mt-2 text-lg text-gray-600">
               Advanced crypto market analysis powered by AI. Get real-time insights, chart patterns, and trading signals.
             </p>

@@ -30,7 +30,7 @@ export const DailyAnalysis = () => {
     const fetchDailyAnalysis = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/daily');
+        const response = await fetch('https://server-shy-feather-7870.fly.dev/api/daily');
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

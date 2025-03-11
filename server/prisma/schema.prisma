@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id          Int      @id @default(autoincrement())
-  dailyCredit Int      @default(10)
+  dailyCredit Int      @default(5)
   address     String   @unique
   signature   String   @unique
   createdAt   DateTime @default(now())

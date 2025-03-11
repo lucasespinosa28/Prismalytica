@@ -30,7 +30,7 @@ export const WeeklyAnalysis = () => {
     const fetchWeeklyAnalysis = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3000/api/weekly');
+        const response = await fetch('https://server-shy-feather-7870.fly.dev/api/weekly');
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

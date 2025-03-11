@@ -10,7 +10,7 @@ async function resetDailyCredits() {
   try {
     const result = await prisma.user.updateMany({
       data: {
-        dailyCredit: 10
+        dailyCredit: 5
       }
     });
     

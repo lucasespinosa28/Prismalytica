@@ -47,7 +47,7 @@ export const sendQueryToAI = async (
   if (!signature) {
     throw new Error("Signature is required");
   }
-  const response = await fetch('http://localhost:3000/api/query', {
+  const response = await fetch('https://server-shy-feather-7870.fly.dev/api/query', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ export const sendAnalysisRequest = async (
   // Access the store state directly without using the hook
   const data = useCandleStore.getState().candle;
 
-  const response = await fetch('http://localhost:3000/api/analysis', {
+  const response = await fetch('https://server-shy-feather-7870.fly.dev/api/analysis', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

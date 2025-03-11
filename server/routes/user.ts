@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, getUserDailyCreditByAddress, userExistsByAddress } from '../lib/userDb';
+import { createUser, getTotalUserCount, getUserDailyCreditByAddress, userExistsByAddress } from '../lib/userDb';
 
 const router = express.Router();
 
@@ -76,6 +76,13 @@ router.get('/dailyCredit/:address', async (req: any, res: any) => {
  */
 router.post('/create', async (req: any, res: any) => {
   try {
+    const countUser = await getTotalUserCount();
+    if (countUser >= 50) {
+      return res.status(429).json({ 
+        success: false, 
+        message: 'Too many users registered, maximum limit reached' 
+      });
+    }
     const { address, signature } = req.body;
 
     if (!address || !signature) {
@@ -107,6 +114,27 @@ router.post('/create', async (req: any, res: any) => {
     return res.status(500).json({ 
       success: false, 
       message: 'Server error while creating user' 
+    });
+  }
+});
+
+/**
+ * GET /user/count
+ * Get the total number of users in the system
+ */
+router.get('/count', async (req: any, res: any) => {
+  try {
+    const count = await getTotalUserCount();
+    
+    return res.status(200).json({
+      success: true,
+      count
+    });
+  } catch (error) {
+    console.error('Error getting user count:', error);
+    return res.status(500).json({ 
+      success: false, 
+      message: 'Server error while getting user count' 
     });
   }
 });

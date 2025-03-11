@@ -14,7 +14,7 @@ const DailyCredit: React.FC<DailyCreditProps> = ({ address, refreshTrigger }) =>
     const fetchCreditInfo = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/user/dailyCredit/${address}`);
+        const response = await fetch(`https://server-shy-feather-7870.fly.dev/user/dailyCredit/${address}`);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch credit info: ${response.statusText}`);

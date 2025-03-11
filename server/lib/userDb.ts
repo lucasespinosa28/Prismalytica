@@ -222,3 +222,17 @@ export async function decrementUserDailyCreditBySignature(signature: string, amo
     throw new Error('Failed to update user daily credit');
   }
 }
+
+/**
+ * Gets the total count of users in the database
+ * @returns The total number of users
+ */
+export async function getTotalUserCount() {
+  try {
+    const count = await prisma.user.count();
+    return count;
+  } catch (error) {
+    console.error('Error counting users:', error);
+    throw new Error('Failed to get total user count');
+  }
+}

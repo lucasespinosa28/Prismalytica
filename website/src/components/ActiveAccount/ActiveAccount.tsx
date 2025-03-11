@@ -24,7 +24,7 @@ const ActiveAccount: React.FC<ActiveAccountProps> = ({ address, onActivationSucc
         try {
           setApiError(null);
 
-          const response = await fetch('http://localhost:3000/user/create', {
+          const response = await fetch('https://server-shy-feather-7870.fly.dev/user/create', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

@@ -10,7 +10,7 @@ import { createDailyAnalysis } from '../lib/dayleDb';
 
 export const initDailyAnalysisJob = (): CronJob => {
     const job = new CronJob(
-        '0 * * * *', // Cron expression for every hour (at minute 0)
+        '0 0 * * *', // Cron expression for 00:05 (5 minutes after midnight) every day
         async function () {
             if (!process.env.GOOGLE_API_KEY) {
                 throw new Error("Please set the GOOGLE_API_KEY environment variable.");

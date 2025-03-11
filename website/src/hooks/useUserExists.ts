@@ -21,7 +21,7 @@ export const useUserExists = (address: string | undefined) => {
       setError(null);
 
       try {
-        const response = await fetch(`http://localhost:3000/user/exists/${address}`);
+        const response = await fetch(`https://server-shy-feather-7870.fly.dev/user/exists/${address}`);
         const data: UserExistsResponse = await response.json();
         if (data.success) {
           setUserExists(data.exists);
