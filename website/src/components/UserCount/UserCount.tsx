@@ -13,7 +13,14 @@ const UserCount: React.FC<UserCountProps> = ({ refreshTrigger }) => {
     const fetchUserCount = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`https://server-shy-feather-7870.fly.dev/user/count`);
+         const response = await fetch(`https://server-shy-feather-7870.fly.dev/user/count`, {
+            credentials: 'include',
+            headers: {
+              'Accept': 'application/json',
+              'Origin': window.location.origin
+            }
+          });
+  
 
         if (!response.ok) {
           throw new Error(`Failed to fetch user count: ${response.statusText}`);
