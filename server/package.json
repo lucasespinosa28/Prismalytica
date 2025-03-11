@@ -1,0 +1,29 @@
+{
+  "name": "server",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@flydotio/dockerfile": "^0.7.8",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@llamaindex/google": "^0.0.13",
+    "@llamaindex/readers": "^2.0.6",
+    "@prisma/client": "^6.4.1",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.9",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "cron": "^4.1.0",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "llamaindex": "^0.9.7",
+    "prisma": "^6.4.1"
+  },
+  "packageManager": "pnpm@9.14.2+sha512.6e2baf77d06b9362294152c851c4f278ede37ab1eba3a55fda317a4a17b209f4dbb973fb250a77abc463a341fcb1f17f17cfa24091c4eb319cda0d9b84278387"
+}
