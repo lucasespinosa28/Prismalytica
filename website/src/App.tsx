@@ -39,7 +39,7 @@ function App() {
         {account.address && userExists === true && (
           <ChatInterface address={account.address} />
         )}
-        <AnalysisDashboard/>
+      
 
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           {!account.address ? (
@@ -76,6 +76,7 @@ function App() {
           />
         )}
         </div>
+        <AnalysisDashboard/>
       </div>
     </div>
   )
