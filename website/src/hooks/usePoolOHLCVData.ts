@@ -64,9 +64,9 @@ export async function fetchPoolOHLCVData(
             if (item.length < 6) {
                 throw new Error('Invalid OHLCV data format');
             }
-
+            const timestamp = new Date(item[0] * 1000);
             return {
-                timestamp: new Date(item[0] * 1000).toDateString(),
+                timestamp: `${timestamp.toUTCString()} ${timestamp.getHours()}`,
                 open: parseFloat(item[1].toFixed(4)),
                 high: parseFloat(item[2].toFixed(4)),
                 low: parseFloat(item[3].toFixed(4)),
@@ -74,6 +74,7 @@ export async function fetchPoolOHLCVData(
                 volume: parseFloat(item[5].toFixed(4))
             };
         });
+        console.log('Fetched pool OHLCV data:', data);
         return data;
     } catch (error) {
         console.error('Error fetching pool OHLCV data:', error);
