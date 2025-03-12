@@ -1,7 +1,6 @@
-# Crypto Technical Analyst AI Agent
-
-![Captura de tela_28-12-2024_134257_localhost](https://github.com/user-attachments/assets/a15c7ba7-e996-4ec0-86ee-19b9377287d2)
-
+# Prismalytica 
+**Crypto Technical Analyst AI Agent**
+![prismalytica pages dev_](https://github.com/user-attachments/assets/ebcf53c7-7d97-4a5b-ad71-7182b028ae2d)
 ## Project Description
 
 The Crypto Technical Analyst AI Agent is an advanced tool designed to provide in-depth technical analysis for cryptocurrency trading. Leveraging the power of Crypto.com's AI Agent SDK, this project aims to offer traders and investors a sophisticated, AI-driven approach to analyzing crypto markets.
