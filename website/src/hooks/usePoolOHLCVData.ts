@@ -66,7 +66,7 @@ export async function fetchPoolOHLCVData(
             }
 
             return {
-                timestamp: new Date(item[0] * 1000).toLocaleString(),
+                timestamp: new Date(item[0] * 1000).toDateString(),
                 open: parseFloat(item[1].toFixed(4)),
                 high: parseFloat(item[2].toFixed(4)),
                 low: parseFloat(item[3].toFixed(4)),
