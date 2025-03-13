@@ -21,10 +21,9 @@ interface ApiResponse {
 }
 
 export const WeeklyAnalysis = () => {
-  const [analyses, setAnalyses] = useState<AnalysisItem[]>([]);
+  const [analysis, setAnalysis] = useState<AnalysisItem | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentIndex, setCurrentIndex] = useState<number>(0);
 
   useEffect(() => {
     const fetchWeeklyAnalysis = async () => {
@@ -37,7 +36,8 @@ export const WeeklyAnalysis = () => {
         }
 
         const data: ApiResponse = await response.json();
-        setAnalyses(data.data);
+        // Only get the first/most recent analysis
+        setAnalysis(data.data.length > 0 ? data.data[0] : null);
         setError(null);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unknown error occurred');
@@ -55,35 +55,21 @@ export const WeeklyAnalysis = () => {
     return date.toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+      day: 'numeric'
     });
   };
 
-  // Navigation functions
-  const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === 0 ? analyses.length - 1 : prevIndex - 1
-    );
-  };
-
-  const goToNext = () => {
-    setCurrentIndex((prevIndex) => 
-      prevIndex === analyses.length - 1 ? 0 : prevIndex + 1
-    );
-  };
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 h-full">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Weekly Market Analysis</h2>
+    <div className="bg-gray-800/50 rounded-lg shadow-md p-6 h-full border border-gray-700">
+      <h2 className="text-2xl font-bold text-white mb-6">Weekly CRO Market Analysis </h2>
 
       {loading ? (
         <div className="flex justify-center items-center py-10">
           <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent"></div>
         </div>
       ) : error ? (
-        <div className="bg-red-50 p-4 rounded-md">
-          <p className="text-red-600">Error loading analysis: {error}</p>
+        <div className="bg-red-900/30 p-4 rounded-md border border-red-700">
+          <p className="text-red-300">Error loading analysis: {error}</p>
           <button 
             onClick={() => window.location.reload()}
             className="mt-2 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
@@ -91,69 +77,25 @@ export const WeeklyAnalysis = () => {
             Retry
           </button>
         </div>
-      ) : analyses.length === 0 ? (
-        <p className="text-gray-600 text-center py-8">No analysis data available.</p>
+      ) : !analysis ? (
+        <p className="text-gray-300 text-center py-8">No analysis data available.</p>
       ) : (
-        <div className="relative">
-          {/* Navigation arrows */}
-          <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-4 z-10">
-            <button 
-              onClick={goToPrevious}
-              className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 focus:outline-none"
-              aria-label="Previous analysis"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
+        <div className="border border-gray-600 rounded-lg p-6 bg-gray-700/50">
+          <div className="flex justify-between items-start mb-4">
+            <h3 className="text-lg font-semibold text-gray-200">Latest Weekly Analysis</h3>
+            <span className="text-sm text-gray-400">{formatDate(analysis.timeStamp)}</span>
           </div>
 
-          {/* Current analysis */}
-          <div className="border border-gray-200 rounded-lg p-5 mx-8">
-            <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-semibold text-gray-700">Analysis #{analyses[currentIndex].id}</h3>
-              <span className="text-sm text-gray-500">{formatDate(analyses[currentIndex].timeStamp)}</span>
-            </div>
-            <div>
-              <h4 className="text-sm font-medium text-gray-600 mb-1">Analysis:</h4>
-              <div className="prose max-w-none text-gray-800 max-h-[400px] overflow-y-auto pr-2">
-                <ReactMarkdown components={{
-                  a: ({ href, children, ...props }) => (
-                    <a href={href} target="_blank" rel="noopener noreferrer" {...props}>
-                      {children}
-                    </a>
-                  ),
-                }}>
-                  {analyses[currentIndex].message}
-                </ReactMarkdown>
-              </div>
-            </div>
-          </div>
-
-          <div className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-4 z-10">
-            <button 
-              onClick={goToNext}
-              className="bg-white rounded-full p-2 shadow-md hover:bg-gray-100 focus:outline-none"
-              aria-label="Next analysis"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
-
-          {/* Pagination indicator */}
-          <div className="flex justify-center mt-4 space-x-2">
-            {analyses.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentIndex(index)}
-                className={`h-2 w-2 rounded-full ${
-                  index === currentIndex ? 'bg-blue-600' : 'bg-gray-300'
-                }`}
-                aria-label={`Go to analysis ${index + 1}`}
-              />
-            ))}
+          <div className="prose prose-invert max-w-none text-gray-200">
+            <ReactMarkdown components={{
+              a: ({ href, children, ...props }) => (
+                <a href={href} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300" {...props}>
+                  {children}
+                </a>
+              ),
+            }}>
+              {analysis.message}
+            </ReactMarkdown>
           </div>
         </div>
       )}

@@ -12,17 +12,15 @@ const DailyCredit: React.FC<DailyCreditProps> = ({ address, refreshTrigger }) =>
 
   useEffect(() => {
     const fetchCreditInfo = async () => {
+      if (!address) return;
       try {
         setLoading(true);
         const response = await fetch(`https://server-shy-feather-7870.fly.dev/user/dailyCredit/${address}`);
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch credit info: ${response.statusText}`);
-        }
+        if (!response.ok) throw new Error(`Failed to fetch credit info: ${response.statusText}`);
 
         const data = await response.json();
-        console.log(data)
-        setCreditInfo({ used: data.dailyCredit, total:10  });
+        setCreditInfo({ used: data.dailyCredit, total: 10 });
         setError(null);
       } catch (err) {
         console.error('Error fetching daily credit info:', err);
@@ -33,41 +31,55 @@ const DailyCredit: React.FC<DailyCreditProps> = ({ address, refreshTrigger }) =>
       }
     };
 
-    if (address) {
-      fetchCreditInfo();
-    }
-  }, [address, refreshTrigger]); // Add refreshTrigger to the dependency array
+    fetchCreditInfo();
+  }, [address, refreshTrigger]);
 
+  // Render compact loading state
   if (loading) {
-    return <div className="p-4 bg-white rounded-lg shadow-sm text-center text-gray-500">Loading credit info...</div>;
+    return (
+      <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm flex items-center justify-center gap-2 text-sm text-gray-500">
+        <div className="animate-spin h-3 w-3 border-2 border-blue-500 border-t-transparent rounded-full"></div>
+        <span>Loading...</span>
+      </div>
+    );
   }
 
+  // Render compact error state
   if (error) {
-    return <div className="p-4 bg-white rounded-lg shadow-sm text-red-500">{error}</div>;
+    return (
+      <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm text-xs text-red-500 flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+        </svg>
+        <span>Error loading credits</span>
+      </div>
+    );
   }
 
+  // Render compact no data state
   if (!creditInfo) {
-    return <div className="p-4 bg-white rounded-lg shadow-sm text-gray-500">No credit information available</div>;
+    return (
+      <div className="p-3 bg-white dark:bg-gray-800 rounded-lg shadow-sm text-xs text-gray-500">
+        No credit data
+      </div>
+    );
   }
 
-  const usagePercentage = (creditInfo.used / creditInfo.total) * 100;
+  // Calculate remaining credits and percentages
+  const remaining = creditInfo.total - creditInfo.used;
+  const remainingPercentage = Math.max(0, Math.min(100, (remaining / creditInfo.total) * 100));
 
+  // Determine color based on remaining percentage
+  const barColor = remainingPercentage > 9 ? 'bg-green-500' : 
+                  remainingPercentage > 3 ? 'bg-yellow-500' : 'bg-red-500';
   return (
-    <div className="p-4 bg-white rounded-lg shadow-sm">
-      <h3 className="text-lg font-medium text-gray-700 mb-2">Daily Credits</h3>
-      <div className="space-y-2">
-        <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-          <div 
-            className={`h-full rounded-full ${
-              usagePercentage > 80 ? 'bg-green-500' : 
-              usagePercentage > 50 ? 'bg-yellow-500' : 'bg-red-500'
-            }`}
-            style={{ width: `${usagePercentage}%` }}
-          ></div>
-        </div>
-        <div className="text-sm text-gray-600 text-right">
-          {creditInfo.used} / {creditInfo.total} used
-        </div>
+    <div className="p-3 bg-white dark:bg-gray-800 shadow-sm">
+      <div className="flex justify-between items-center text-xs mb-1.5">
+        <span className="font-medium text-gray-700 dark:text-gray-300">Daily Credits</span>
+        <span className="text-gray-500">{remaining}/{creditInfo.total}</span>
+      </div>
+      <div className="w-full h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+        <div className={`h-full rounded-full ${barColor}`} style={{ width: `${remainingPercentage}%` }}></div>
       </div>
     </div>
   );

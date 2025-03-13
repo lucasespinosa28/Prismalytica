@@ -192,13 +192,22 @@ const ChatInterface: React.FC<{ address: `0x${string}` }> = ({ address }) => {
   };
 
   return (
-    <div className="flex h-80vh relative rounded-lg overflow-hidden shadow-md">
+    <div className="flex w-full h-[calc(100vh-180px)] relative rounded-lg overflow-hidden shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
       {/* Menu toggle button for mobile */}
       <button
-        className="absolute top-2 left-2 z-10 md:hidden p-2 bg-white rounded-md shadow-sm"
+        className="absolute top-3 left-3 z-20 md:hidden p-2 bg-white dark:bg-gray-700 rounded-full shadow-md hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
         onClick={toggleMenu}
+        aria-label={menuOpen ? "Close menu" : "Open menu"}
       >
-        {menuOpen ? '✕' : '☰'}
+        {menuOpen ? (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600 dark:text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        )}
       </button>
 
       {/* Left menu */}
@@ -212,19 +221,21 @@ const ChatInterface: React.FC<{ address: `0x${string}` }> = ({ address }) => {
       />
 
       {/* Chat area */}
-      <div className="flex flex-col flex-1">
+      <div className="flex flex-col flex-1 bg-gray-50 dark:bg-gray-900">
         {/* Daily Credit component with refresh trigger */}
-        <DailyCredit address={address} refreshTrigger={creditRefreshTrigger} />
+     
+
         {currentChat && (
           <ChatMessages
             messages={currentChat.messages}
             isLoading={isLoading}
           />
         )}
-        {/* Technical analysis chart */}
-        <div className="p-3 border-t border-gray-200 bg-gray-50">
-          <label className="flex items-center justify-between cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 w-full">
-            <span className="text-sm font-medium text-gray-700">Show Price Chart of CRO/USD</span>
+
+        {/* Technical analysis chart toggle */}
+        <div className="p-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+          <label className="flex items-center justify-between cursor-pointer p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200 w-full">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Show Price Chart of CRO/USD</span>
             <div className="relative">
               <input
                 type="checkbox"
@@ -232,31 +243,21 @@ const ChatInterface: React.FC<{ address: `0x${string}` }> = ({ address }) => {
                 onChange={() => setShowPriceChart(!showPriceChart)}
                 className="sr-only peer"
               />
-              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
+              <div className="w-11 h-6 bg-gray-200 dark:bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"></div>
             </div>
           </label>
-          {showPriceChart && (
-            <div className="mt-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
-              <p className="text-sm text-amber-700 flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-                </svg>
-                Note: Some Cronos functions may be limited due to the quantity of data required for the price chart.
-              </p>
-            </div>
-          )}
+
+          {showPriceChart && <TechnicalAnalyst />}
         </div>
-        {showPriceChart && (
-            <div className="p-3">
-              <TechnicalAnalyst />
-            </div>
-        )}
+
+        {/* Input area */}
         <ChatInput
           inputMessage={inputMessage}
           setInputMessage={setInputMessage}
           handleSendMessage={handleSendMessage}
           isLoading={isLoading}
         />
+           <DailyCredit address={address} refreshTrigger={creditRefreshTrigger} />
       </div>
     </div>
   );

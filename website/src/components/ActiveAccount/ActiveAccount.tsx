@@ -86,42 +86,76 @@ const ActiveAccount: React.FC<ActiveAccountProps> = ({ address, onActivationSucc
   };
 
   return (
-    <div className="p-8 flex justify-center items-center">
-      <div className="bg-white rounded-lg shadow-lg p-8 max-w-md w-full">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4">Account Activation Required</h2>
-        <p className="text-gray-600 mb-6">Your wallet address needs to be activated to access the Technical Analyst features.</p>
-
-        <div className="bg-gray-50 p-4 rounded-md mb-6">
-          <span className="block text-sm font-medium text-gray-700 mb-1">Wallet Address:</span>
-          <code className="block text-sm bg-gray-100 p-2 rounded overflow-auto break-all">{address}</code>
+    <div className="flex justify-center items-center min-h-[80vh] px-4 py-12 bg-gradient-to-b from-gray-900 to-gray-800">
+      <div className="bg-gray-800/50 border border-gray-700 rounded-xl shadow-2xl p-8 max-w-md w-full backdrop-blur-sm">
+        <div className="flex items-center justify-center mb-6">
+          <div className="h-16 w-16 bg-blue-500/20 rounded-full flex items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 100-12 6 6 0 000 12zm-1-5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1zm0-4a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clipRule="evenodd" />
+            </svg>
+          </div>
         </div>
 
-        {status === "error" && <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4">Error signing message. Please try again.</div>}
-        {apiError && <div className="bg-red-50 text-red-600 p-3 rounded-md mb-4">{apiError}</div>}
-        {status === "success" && !apiError && <div className="bg-green-50 text-green-600 p-3 rounded-md mb-4">Signature successful! Activating your account...</div>}
+        <h2 className="text-2xl font-bold text-white text-center mb-2">Account Activation</h2>
+        <p className="text-gray-300 text-center mb-8">Verify your wallet to access premium features</p>
 
+        <div className="bg-gray-700/50 border border-gray-600 p-4 rounded-lg mb-6">
+          <span className="block text-sm font-medium text-gray-300 mb-1">Connected Wallet:</span>
+          <code className="block text-sm bg-gray-800/70 text-blue-300 p-3 rounded-md overflow-auto break-all border border-gray-600">{address}</code>
+        </div>
+
+        {status === "error" && (
+          <div className="bg-red-900/30 text-red-300 p-4 rounded-lg mb-6 border border-red-700 flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <span>Error signing message. Please try again.</span>
+          </div>
+        )}
+
+        {apiError && (
+          <div className="bg-red-900/30 text-red-300 p-4 rounded-lg mb-6 border border-red-700 flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+            </svg>
+            <span>{apiError}</span>
+          </div>
+        )}
+
+        {status === "success" && !apiError && (
+          <div className="bg-green-900/30 text-green-300 p-4 rounded-lg mb-6 border border-green-700 flex items-start">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 mt-0.5 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+            </svg>
+            <span>Signature successful! Activating your account...</span>
+          </div>
+        )}
         <button 
-          className={`w-full py-3 px-4 rounded-md font-medium text-white transition-colors ${
+          className={`w-full py-3.5 px-4 rounded-lg font-medium text-white transition-all duration-200 flex items-center justify-center ${
             isActivating || isSigningMessage 
-              ? 'bg-blue-400 cursor-not-allowed' 
-              : 'bg-blue-600 hover:bg-blue-700'
+              ? 'bg-blue-600/50 cursor-not-allowed' 
+              : 'bg-blue-600 hover:bg-blue-500 shadow-lg hover:shadow-blue-500/30'
           }`}
           onClick={handleActivateAccount}
           disabled={isActivating || isSigningMessage}
         >
-          {isActivating || isSigningMessage ? 'Activating...' : 'Activate Account'}
+          {isActivating || isSigningMessage ? (
+            <>
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Activating...
+            </>
+          ) : (
+            <>
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clipRule="evenodd" />
+              </svg>
+              Activate Account
+            </>
+          )}
         </button>
-
-        <div className="mt-6 space-y-4 text-sm text-gray-500">
-          <p>
-            By activating your account, you'll gain access to AI-powered technical analysis 
-            and trading insights.
-          </p>
-          <p className="italic">
-            You'll be asked to sign a message to verify ownership of your wallet address.
-            This is a secure process and doesn't require any gas fees.
-          </p>
-        </div>
       </div>
     </div>
   );
