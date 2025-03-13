@@ -5,7 +5,6 @@ import { RouterProvider, createRouter } from '@tanstack/react-router'
 // Import the generated route tree
 import { routeTree } from './routeTree.gen'
 import './index.css'
-import App from './App.tsx'
 
 import '@rainbow-me/rainbowkit/styles.css';
 
