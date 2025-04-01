@@ -5,22 +5,144 @@
 [Website](https://prismalytica.pages.dev/)
 ## Project Description
 
-Prismalytica represents the convergence of advanced artificial intelligence and cryptocurrency market analysis, offering a comprehensive solution for traders seeking an edge in digital asset markets. This sophisticated platform continuously monitors market conditions across multiple exchanges, analyzing price movements, volume patterns, and market sentiment to identify potential trading opportunities.
+This Telegram bot helps users analyze on-chain cryptocurrency data on the Cronos blockchain. It provides insights by fetching OHLCV (Open, High, Low, Close, Volume) data, generating candlestick charts, and answering user queries about the data.
 
-Built on Crypto.com's robust AI Agent SDK, Prismalytica processes vast amounts of market data through specialized machine learning models trained specifically for cryptocurrency technical analysis. The system can identify complex chart patterns, calculate key technical indicators, and generate probabilistic forecasts based on historical data correlations.
+## What the Bot Does
 
-What sets Prismalytica apart is its ability to communicate these complex analyses in clear, actionable insights through natural language processing. Rather than overwhelming users with raw data, the platform translates technical findings into straightforward recommendations and explanations, making advanced trading strategies accessible to traders of all experience levels.
+1. **Cryptocurrency Analysis**: Users can analyze specific cryptocurrency pools by providing parameters such as pool, timeframe, aggregate, and limit.
+2. **Candlestick Charts**: The bot generates candlestick charts based on the requested data.
+3. **Interactive Insights**: Users can ask questions about the data, and the bot uses an LLM (Large Language Model) to provide detailed answers.
+4. **Session Management**: The bot tracks user sessions and manages daily credits using Redis.
 
-The platform offers both daily and weekly analysis reports, covering major cryptocurrencies and emerging tokens alike. These reports include support/resistance levels, trend analysis, momentum indicators, and volatility assessments—all contextualized with relevant market events and on-chain metrics when applicable.
+For more details on how to use the bot, refer to the [Usage](#usage) section.
 
-The Crypto Technical Analyst AI Agent is an advanced tool designed to provide in-depth technical analysis for cryptocurrency trading. Leveraging the power of Crypto.com's AI Agent SDK, this project aims to offer traders and investors a sophisticated, AI-driven approach to analyzing crypto markets.
+## Features
 
-![prismalytica pages dev_](https://github.com/user-attachments/assets/ebcf53c7-7d97-4a5b-ad71-7182b028ae2d)
+- Analyze cryptocurrency pools by providing parameters like pool, timeframe, aggregate, and limit.
+- Generate candlestick charts for the requested data.
+- Answer user questions about the data using an LLM (Large Language Model).
+- Manage user sessions and daily credits using Redis.
 
-### Unique Features
-1. **AI-Powered Analysis**: Utilizes advanced AI models to perform technical analysis, offering insights beyond traditional analytical methods.
-2. **Real-Time Data Processing**: Connects to live market data sources for up-to-date analysis.
-3. **Customizable Queries**: Users can input specific questions or parameters to receive tailored analytical responses.
-5. **Integration with Cronos Ecosystem**: Leverages the robust infrastructure and data from Crypto.com's platform.
-6. **Self-Hosted Solution**: Offers the flexibility and security of running the AI agent on your own server.
-7. **User-Friendly Interface**: Provides an intuitive frontend for easy interaction with the AI agent.
+## Prerequisites
+
+Before running the bot, ensure you have the following installed:
+
+1. **Node.js**: Version 16 or higher.
+2. **Redis**: For managing user state and session data.
+3. **Docker** (optional): For running Redis in a container.
+4. **Telegram Bot Token**: Obtain one by creating a bot on Telegram via [BotFather](https://core.telegram.org/bots#botfather).
+
+## Setup Instructions
+
+### 1. Clone the Repository
+
+```bash
+git clone <repository-url>
+cd <repository-folder>
+```
+
+### 2. Install Dependencies
+
+Navigate to the bot's source directory and install the required dependencies:
+
+```bash
+cd services/bot
+npm install
+```
+
+### 3. Configure Environment Variables
+
+Create a `.env` file in the `/src` directory and add the following:
+
+```env
+BOT_TOKEN=<your-telegram-bot-token>
+```
+
+Replace `<your-telegram-bot-token>` with the token you received from BotFather.
+
+### 4. Start Redis
+
+If you have Docker installed, you can start Redis using the following command:
+
+```bash
+docker run --name redis -p 6379:6379 -d redis
+```
+
+Alternatively, install Redis locally and ensure it is running on `localhost:6379`.
+
+### 5. Run the Bot
+
+Start the bot using the following command:
+
+```bash
+npm start
+```
+
+The bot will connect to Telegram and start listening for user commands.
+
+## Usage
+
+### Commands
+
+- **/start**: Initializes the bot and sets up the user's state.
+- **/analysis**: Guides the user to provide parameters for data analysis.
+- **/credits**: Displays the remaining daily credits for the user.
+- **/bye**: Ends the current session.
+
+### Analysis Parameters
+
+When using the `/analysis` command, provide the following parameters in the format:
+
+```
+pool timeframe aggregate limit
+```
+
+- **pool**: The cryptocurrency pool address or symbol (e.g., `BTC`, `ETH`).
+- **timeframe**: The time period for aggregation (`day`, `hour`, `minute`).
+- **aggregate**: The aggregation interval (e.g., `1`, `4`, `12`).
+- **limit**: The number of OHLCV results to return (max: 1000).
+
+Example:
+
+```
+0xe61db569e231b3f5530168aa2c9d50246525b6d6 day 1 100
+```
+
+### Credits
+
+Each analysis consumes 1 credit. Users start with 5 daily credits, which reset every 24 hours.
+
+## Code Overview
+
+### Key Files
+
+- **`src/bot.ts`**: Contains the main bot logic, including command handlers and user session management.
+- **`src/services/fetchData.ts`**: Fetches OHLCV data from the blockchain.
+- **`src/charts/generateCandleChartSvg.ts`**: Generates candlestick charts in SVG format.
+- **`src/services/fetchLlm.ts`**: Sends user queries and CSV data to an LLM for analysis.
+
+### Redis Integration
+
+The bot uses Redis to store user state, including:
+
+- `privateKey`: Placeholder for user-specific data.
+- `step`: Tracks the user's current step in the workflow.
+- `csvData`: Stores the CSV data for analysis.
+- `lastActivity`: Timestamp of the user's last interaction.
+- `dailyCredit`: Tracks the user's remaining daily credits.
+
+### Error Handling
+
+The bot includes error handling for:
+
+- Invalid input formats.
+- Session timeouts.
+- Redis connection issues.
+
+## Contributing
+
+Feel free to submit issues or pull requests to improve the bot. Contributions are welcome!
+
+## License
+
+This project is licensed under the MIT License.
