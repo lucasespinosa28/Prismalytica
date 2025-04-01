@@ -1,0 +1,4 @@
+cryptocom-agent-client==1.0.1
+uvicorn
+pandas
+fastapi[standard]

@@ -1,0 +1,58 @@
+# flyctl launch added from .gitignore
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+**/pnpm-debug.log*
+**/lerna-debug.log*
+**/api
+**/node_modules
+**/dist
+**/dist-ssr
+**/*.local
+**/venv
+# Editor directories and files
+**/.vscode/*
+!**/.vscode/extensions.json
+**/.idea
+**/.DS_Store
+**/*.suo
+**/*.ntvs*
+**/*.njsproj
+**/*.sln
+**/*.sw?
+
+**/.env
+
+# flyctl launch added from bot/.gitignore
+# deps
+bot/**/node_modules
+
+# flyctl launch added from website/.gitignore
+# Logs
+website/**/logs
+website/**/*.log
+website/**/npm-debug.log*
+website/**/yarn-debug.log*
+website/**/yarn-error.log*
+website/**/pnpm-debug.log*
+website/**/lerna-debug.log*
+
+website/**/node_modules
+website/**/dist
+website/**/dist-ssr
+website/**/*.local
+
+# Editor directories and files
+website/**/.vscode/*
+!website/**/.vscode/extensions.json
+website/**/.idea
+website/**/.DS_Store
+website/**/*.suo
+website/**/*.ntvs*
+website/**/*.njsproj
+website/**/*.sln
+website/**/*.sw?
+fly.toml
