@@ -3,45 +3,11 @@ import { Telegraf } from 'telegraf';
 import sharp from 'sharp';
 import { fetchData } from './services/fetchData';
 import { generateCandleChartSvg } from './charts/generateCandleChartSvg';
-import { createClient } from 'redis';
 import { fetchLlm } from './services/fetchLlm';
+import redisClient, { ensureRedisConnected } from './services/redis';
+import { CoinData, CoinsData, State } from './types';
 
-// Define the structure for cryptocurrency data
-interface CoinData {
-  symbol: string;
-  name: string;
-  pool: string;
-}
-
-// List of supported cryptocurrencies
-const CoinsData: CoinData[] = [
-  { symbol: 'CRO', name: 'Cronos Coin', pool: "0xe61db569e231b3f5530168aa2c9d50246525b6d6" },
-  { symbol: 'BTC', name: 'Bitcoin', pool: "0x8f09fff247b8fdb80461e5cf5e82dd1ae2ebd6d7" },
-  { symbol: 'ETH', name: 'Ethereum', pool: "0xa111c17f8b8303280d3eb01bbcd61000aa7f39f9" }
-];
-
-// Initialize the Telegram bot
 const bot = new Telegraf(process.env.BOT_TOKEN!);
-
-// Initialize Redis client for state management
-const redisClient = createClient({
-  username: process.env.REDIS_USERNAME,
-  password: process.env.REDIS_PASSWORD,
-  socket: {
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT, 10) : undefined
-  }
-})
-redisClient.on('error', (err) => console.error('Redis Client Error', err));
-
-// Define the structure for user state
-type State = {
-  privateKey: string;
-  step: number;
-  csvData: string | null;
-  lastActivity: number;
-  dailyCredit: number;
-};
 
 // Helper functions for managing user state in Redis
 async function setUserState(userId: string, state: State) {
@@ -55,13 +21,6 @@ async function getUserState(userId: string): Promise<State | null> {
 
 async function deleteUserState(userId: string) {
   await redisClient.del(userId);
-}
-
-// Ensure Redis client is connected before performing operations
-async function ensureRedisConnected() {
-  if (!redisClient.isOpen) {
-    await redisClient.connect();
-  }
 }
 
 // Timeout duration for user sessions
@@ -96,7 +55,7 @@ bot.start(async (ctx) => {
 bot.command('analysis', async (ctx) => {
   await ensureRedisConnected(); // Ensure Redis is connected
   const userId = ctx.from.id.toString();
-  const coinSymbols = CoinsData.map(coin => coin.symbol).join(', ');
+  const coinSymbols = CoinsData.map((coin: CoinData) => coin.symbol).join(', ');
 
   ctx.reply(
     "Please provide the following parameters for data analysis in the format:\n" +

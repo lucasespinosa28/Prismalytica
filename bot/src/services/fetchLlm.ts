@@ -1,6 +1,4 @@
-interface LLMResponse {
-    response: string;
-}
+import { LLMResponse } from "../types";
 
 export async function fetchLlm(prompt: string, csvData: string): Promise<string> {
     prompt = `${csvData.replace(/\n/g, ' ')},${prompt.replace(/\n/g, ' ')}`.replace(/\s+/g, ' ').trim();

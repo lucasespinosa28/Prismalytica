@@ -1,5 +1,11 @@
+import { createFileRoute } from '@tanstack/react-router'
 const Logo = () => <div className="text-2xl font-bold">Prismalytica</div>
-function App() {
+
+export const Route = createFileRoute('/howtouse')({
+  component: Howtouse,
+})
+
+function Howtouse() {
   return (
     <div className="min-h-screen flex flex-col bg-gray-900 text-white">
       {/* Hero Section */}
@@ -121,5 +127,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

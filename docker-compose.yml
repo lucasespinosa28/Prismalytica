@@ -11,7 +11,7 @@ services:
       - GOOGLE_API_KEY=${GOOGLE_API_KEY}
       - EXPLORER_API_KEY=${EXPLORER_API_KEY}
       - BASE_URL=${BASE_URL}
-      - BOT_TOKEN=${BOT_TOKEN} # Ensure BOT_TOKEN is included
+      - BOT_TOKEN=${BOT_TOKEN_DEV} # Ensure BOT_TOKEN is included
     volumes:
       - ./llm:/app
 
@@ -24,22 +24,24 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - BOT_TOKEN=${BOT_TOKEN}
-      - REDIS_HOST=${REDIS_HOST}
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
-      - REDIS_USERNAME=${REDIS_USERNAME}
+      - BOT_TOKEN=${BOT_TOKEN_DEV}
+      - GROUP_CHAT_ID=${GROUP_CHAT_ID_DEV}
+      - REDIS_HOST=${REDIS_HOST_DEV}
+      - REDIS_PORT=${REDIS_PORT_DEV}
+      - REDIS_PASSWORD=${REDIS_PASSWORD_DEV}
+      - REDIS_USERNAME=${REDIS_USERNAME_DEV}
+      - LLM_URL=${LLM_URL_DEV}
     volumes:
       - ./bot:/app
-    # depends_on:
-    #   - redis # Ensure Redis starts before the bot
+    depends_on:
+      - redis # Ensure Redis starts before the bot
 
-  # redis:
-  #   image: "redis:latest"
-  #   networks:
-  #     - app-network
-  #   ports:
-  #     - "6379:6379"
+  redis:
+     image: "redis:latest"
+     networks:
+       - app-network
+     ports:
+       - "6379:6379"
 
 networks:
   app-network:
