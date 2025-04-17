@@ -19,7 +19,7 @@ function Index() {
             <ul className="space-y-3 w-full">
               <LinkItem href="https://prismalytica.pages.dev/howtouse" label="How to use" color='text-stone-900 hover:text-stone-700'/>
               <LinkItem href="https://t.me/PrismalyticaBot" label="Bot channel" color='text-stone-900 hover:text-stone-700'/>
-              <LinkItem href="https://t.me/+OFnFVbQ2R_FhYTQx" label="Alert channel" color='text-stone-900 hover:text-stone-700'/>
+              <LinkItem href="https://t.me/+OFnFVbQ2R_FhYTQx" label="Alert group" color='text-stone-900 hover:text-stone-700'/>
               <LinkItem href="https://github.com/lucasespinosa28/Prismalytica" label="GitHub" color='text-stone-900 hover:text-stone-700'/>
             </ul>
           </div>
